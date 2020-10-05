@@ -26,8 +26,9 @@ function generateA380Texture(parent) {
 	g.background(51);
 	g.imageMode(CENTER);
 	g.image(chunkyBoi.textures['_3'], g.width / 2, g.height / 2);
-	g.image(chunkyBoi.textures['_2'], g.width / 4, g.height / 2);
-	g.image(chunkyBoi.textures['_4'], g.width / 4 * 3, g.height / 2);
+	g.imageMode(CORNER);
+	g.image(chunkyBoi.textures['_4'], 0, (g.height / 2) - (519 / 2));
+	g.image(chunkyBoi.textures['_2'],  g.width - 1646, (g.height / 2) - (519 / 2));
 	if (parent) {
 		g.parent(parent);
 		g.show();
