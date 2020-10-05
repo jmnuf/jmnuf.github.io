@@ -1,15 +1,7 @@
 
 // Models
-let person = {
-	model: null,
-	pos: {x:0, y:0, z:-540},
-	rotate: {x:0, y:0, z:0}
-};
-let chunkyBoi = {
-	model: null,
-	pos: {x:100, y:0, z:10},
-	rotate: {x:0, y:0, z:0}
-};
+let person;
+let chunkyBoi;
 
 // Movement
 let translation = [ 0, 0, 200], rotation = [ 0, 0, 0 ];
@@ -27,13 +19,13 @@ function setup() {
   // Human model:
   // https://clara.io/view/23d8ae52-6bb1-4c5a-8f69-365640f48893#
   loadModel('assets/objs/standard-male-figure.obj', (model) => {
-	person.model = model;
+	person = new Human(model);
 	console.log('Model for average human has been loaded');
   });
   // a380 model:
   // https://skfb.ly/6SBUC
   loadModel('assets/objs/a-three-eighty.obj', (model) => {
-	chunkyBoi.model = model;
+	chunkyBoi = new Plane(model);
 	console.log('Model for a380 has been loaded');
   });
   const max = 1000, step = 0.5;
@@ -89,25 +81,11 @@ function draw() {
   // rotateY(90);
 
 
-  if (person.model) {
-	push();
-	rotateZ(180);
-	translate(person.pos.x, person.pos.x, person.pos.z);
-	ambientMaterial(200);
-	// specularMaterial(250);
-	model(person.model, true);
-	pop();
+  if (person) {
+	person.render();
   }
 
-  if (chunkyBoi.model) {
-	push();
-	translate(chunkyBoi.pos.x, chunkyBoi.pos.y, chunkyBoi.pos.z);
-	rotateY(-90);
-	rotateZ(180);
-	scale(0.11505);
-	// scale(0.00885); // Size of human model
-	ambientMaterial(250);
-	model(chunkyBoi.model, true);
-	pop();
+  if (chunkyBoi) {
+	chunkyBoi.render();
   }
 }
