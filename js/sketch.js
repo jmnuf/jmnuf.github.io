@@ -8,13 +8,32 @@ let person = {
 let chunkyBoi = {
 	model: null,
 	pos: {x:100, y:0, z:10},
-	rotate: {x:0, y:0, z:0}
+	rotate: {x:0, y:0, z:0},
+	textures: [ null, null, null, null, null, null ],
+	texture: null,
+	texturesLoaded: false
 };
 
 // Movement
-let translation = [ 0, 0, 200], rotation = [ 0, 0, 0 ];
+let translation = [ 0, 0, 200 ], rotation = [ 0, 0, 0 ];
 
 let sliders = [];
+
+function generateA380Texture(parent) {
+	// 1787 + 1646x2 = 5079
+	// 512 + 1644x2 = 3800
+	let g = createGraphics(5079, 3800);
+	g.background(51);
+	g.imageMode(CENTER);
+	g.image(chunkyBoi.textures['_3'], g.width / 2, g.height / 2);
+	g.image(chunkyBoi.textures['_2'], g.width / 4, g.height / 2);
+	g.image(chunkyBoi.textures['_4'], g.width / 4 * 3, g.height / 2);
+	if (parent) {
+		g.parent(parent);
+		g.show();
+	}
+	chunkyBoi.texture = g;
+}
 
 function setup() {
   const main = select('#main');
@@ -30,14 +49,24 @@ function setup() {
 	person.model = model;
 	console.log('Model for average human has been loaded');
   });
-  // a380 model:
+  // a380 model and textures:
   // https://skfb.ly/6SBUC
   loadModel('assets/objs/a-three-eighty.obj', (model) => {
 	chunkyBoi.model = model;
 	console.log('Model for a380 has been loaded');
   });
+  for(let i = 0; i < 6; i++) {
+  	loadImage(`assets/textures/a-three-eighty/_${i + 1}.jpg`, (img) => {
+  		chunkyBoi.textures[i] = img;
+  		chunkyBoi.textures[`_${i + 1}`] = img;
+  		if (!chunkyBoi.textures.includes(null)) {
+  			chunkyBoi.texturesLoaded = true;
+  			generateA380Texture(main);
+  			console.log('All a380 textures have been loaded');
+  		}
+  	});
+  }
   const max = 1000, step = 0.5;
-  // let sliderTags = [ 'x: ', 'y: ', 'z: ' ];
   let sliderTags = {
 	Translation: {
 	  x: {
@@ -94,7 +123,6 @@ function draw() {
 	rotateZ(180);
 	translate(person.pos.x, person.pos.x, person.pos.z);
 	ambientMaterial(200);
-	// specularMaterial(250);
 	model(person.model, true);
 	pop();
   }
@@ -104,9 +132,13 @@ function draw() {
 	translate(chunkyBoi.pos.x, chunkyBoi.pos.y, chunkyBoi.pos.z);
 	rotateY(-90);
 	rotateZ(180);
-	scale(0.11505);
 	// scale(0.00885); // Size of human model
+	// 0.117705 = 0.00885 * 13.3;
+	scale(0.117705);
 	ambientMaterial(250);
+	if (chunkyBoi.texturesLoaded) {
+		texture(chunkyBoi.texture);
+	}
 	model(chunkyBoi.model, true);
 	pop();
   }
