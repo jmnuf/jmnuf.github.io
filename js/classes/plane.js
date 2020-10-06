@@ -1,6 +1,6 @@
 class Plane extends JM_3DBasics {
 	constructor(model) {
-		super(0, 0, 0);
+		super(100, 0, -10);
 		this.model = model;
 		this.rotate.y = -90;
 		this.rotate.z = 180;
@@ -9,12 +9,13 @@ class Plane extends JM_3DBasics {
 
 	render() {
 		push();
-		rotationOfSelf();
-		translateToSelf();
+		this.translateToSelf();
+		this.rotationOfSelf();
 		if (JM_3DBasics.isValidTexture(this.texture)) {
 			texture(this.texture);
 		}
-		ambientMaterial(200);
+		ambientMaterial(230);
+		scale(0.117705);
 		model(this.model);
 		pop();
 	}

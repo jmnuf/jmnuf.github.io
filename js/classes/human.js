@@ -12,8 +12,8 @@ class Human extends JM_3DBasics {
 
 	render() {
 		push();
-		rotationOfSelf();
-		translateToSelf();
+		this.rotationOfSelf();
+		this.translateToSelf();
 		if (JM_3DBasics.isValidTexture(this.texture)) {
 			texture(this.texture);
 		}
